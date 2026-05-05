@@ -1,0 +1,65 @@
+timestamp,fault_type,file,line,cpu_usage,mem_usage,probable_cause,severity,solution_hint,confidence,backtrace,solution,ml_prediction
+"2026-04-21 16:42:07","System Call Failure","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21 16:42:07","1776782527","8",0,3.37085e+09,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21T14:43:34","SIG32","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21T16:42:07","SIG32","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21T14:43:34","SIG32","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21T13:00:02","SIG32","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21T12:59:46","SIG32","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21T12:59:46","SIG32","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x5594d08c9aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x5594d08c8d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x5594d08c683d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x749ab5829d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x749ab5829e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x5594d08c56a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"

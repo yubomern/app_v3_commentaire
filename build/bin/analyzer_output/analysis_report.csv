@@ -1,0 +1,17 @@
+timestamp,fault_type,file,line,cpu_usage,mem_usage,probable_cause,severity,solution_hint,confidence,backtrace,solution,ml_prediction
+"2026-04-21 16:44:02","Heap Corruption","",0,0,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x6504b60e8aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x6504b60e7d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x6504b60e583d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x7ea262a29d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x7ea262a29e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x6504b60e46a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"
+"2026-04-21 16:44:02","1776782642","4",0,2.57045e+09,0,"No specific pattern matched - requires manual analysis","LOW","Use GDB: `gdb ./app core` -> `bt` -> `info registers`. Check system logs and dmesg.",0.3,"Backtrace (6 frames):
+  [0] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xcaaf) [0x6504b60e8aaf]
+  [1] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0xbd16) [0x6504b60e7d16]
+  [2] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x983d) [0x6504b60e583d]
+  [3] /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x7ea262a29d90]
+  [4] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x7ea262a29e40]
+  [5] /home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/bin/crash_analyzer(+0x86a5) [0x6504b60e46a5]
+","Implement comprehensive error handling","ML Analysis: 30.000000% confidence"

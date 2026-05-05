@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/crash_simulator.dir/simulator/src/simulator_main.cpp.o CMakeFiles/crash_simulator.dir/simulator/src/Simulator.cpp.o CMakeFiles/crash_simulator.dir/simulator/src/Randomizer.cpp.o -o bin/crash_simulator  -lpthread 
