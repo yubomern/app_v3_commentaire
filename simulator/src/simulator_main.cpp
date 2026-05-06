@@ -17,12 +17,13 @@
 #include <string>
 #include <cstdlib>
 #include <csignal>
-#include <unistd.h>
-#include <sys/resource.h>
 #include <filesystem>
 #include <map>
 #include <chrono>
 #include <iomanip>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 namespace fs = std::filesystem;
 using namespace CrashSimulator;
@@ -66,6 +67,12 @@ ScenarioConfig loadConfig(const std::string& path) {
 
 // ─── Enable OS coredumps (Objective 2) ───────────────────────────────────────
 static void setupCoredumps(const std::string& dumpDir) {
+#ifdef _WIN32
+    fs::create_directories(dumpDir);
+    std::cout << "   ✅ Windows output directory created: " << dumpDir << "\n";
+    std::cout << "   ℹ️  Windows does not support /proc/sys/kernel/core_pattern.\n";
+    std::cout << "   ℹ️  Use Windows Error Reporting (WER) or MiniDump APIs to capture dumps.\n";
+#else
     // ulimit -c unlimited
     struct rlimit rl;
     rl.rlim_cur = RLIM_INFINITY;
@@ -89,6 +96,7 @@ static void setupCoredumps(const std::string& dumpDir) {
                      "(run as root for full coredump naming).\n";
         std::cout << "   ℹ️  Coredumps will use default pattern.\n";
     }
+#endif
 }
 
 // ─── Signal handler ───────────────────────────────────────────────────────────
@@ -169,7 +177,11 @@ int main(int argc, char* argv[]) {
     // ── Banner ────────────────────────────────────────────────────────────────
     std::cout << "\n";
     std::cout << "╔══════════════════════════════════════════════════════════╗\n";
+#ifdef _WIN32
+    std::cout << "║       Random Crash Simulator  v3.0  (Windows)            ║\n";
+#else
     std::cout << "║       Random Crash Simulator  v3.0  (Linux)              ║\n";
+#endif
     std::cout << "║       Embedded Fault Generator — Automated Pipeline      ║\n";
     std::cout << "╚══════════════════════════════════════════════════════════╝\n\n";
 

@@ -24,6 +24,9 @@ namespace Analyzer {
 std::string CoreFileParser::runGdb(const std::string& core_path,
                                    const std::string& binary,
                                    const std::string& commands) const {
+#ifdef _WIN32
+    return "[ERROR] Windows build does not support GDB-based core parsing.";
+#else
     // Build GDB batch command
     std::string cmd = "gdb --batch --quiet";
     if (!binary.empty() && fs::exists(binary))
@@ -61,10 +64,14 @@ std::string CoreFileParser::runGdb(const std::string& core_path,
         result += buf.data();
     pclose(pipe);
     return result;
+#endif
 }
 
 // ─── Try to detect associated binary from core file metadata ──────────────
 std::string CoreFileParser::detectBinary(const std::string& core_path) {
+#ifdef _WIN32
+    return "";
+#else
     // Use 'file' command to get program name from core header
     std::string cmd = "file \"" + core_path + "\" 2>&1";
     FILE* p = popen(cmd.c_str(), "r");
@@ -81,6 +88,7 @@ std::string CoreFileParser::detectBinary(const std::string& core_path) {
         return m[1].str();
 
     return "";
+#endif
 }
 
 // ─── Parse GDB output into CoreFileInfo ────────────────────────────────────

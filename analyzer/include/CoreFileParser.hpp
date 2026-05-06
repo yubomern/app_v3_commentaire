@@ -3,6 +3,9 @@
  * CoreFileParser.hpp - Interface de l'analyse des fichiers core Linux.
  * Déclare les structures et fonctions pour extraire les informations
  * de signal, de pile d'appels, de registres et de threads.
+ *
+ * Note : la version Windows compile, mais l'analyse de fichiers core
+ * par GDB n'est pas prise en charge sur Windows.
  */
 
 #include <string>

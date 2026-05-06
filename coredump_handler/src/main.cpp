@@ -32,15 +32,31 @@
 #include <iomanip>
 #include <ctime>
 #include <cstdlib>
+#include <filesystem>
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <sys/resource.h>
 #include <unistd.h>
-#include <filesystem>
+#endif
 
 namespace fs = std::filesystem;
 
-// ─── Setup kernel coredump pattern ────────────────────────────────────────
+// ─── Setup kernel coredumps ────────────────────────────────────────
 static bool setupKernelCoredumps(const std::string& dump_dir,
                                   const std::string& handler_path = "") {
+#ifdef _WIN32
+    std::error_code ec;
+    fs::create_directories(dump_dir, ec);
+    if (ec) {
+        std::cerr << "Cannot create dump dir: " << ec.message() << "\n";
+        return false;
+    }
+    std::cout << "✅ Windows coredump setup stub: directory created " << dump_dir << "\n";
+    std::cout << "ℹ️  Windows does not use /proc/sys/kernel/core_pattern.\n";
+    std::cout << "ℹ️  Use Windows Error Reporting (WER) or MiniDump APIs instead.\n";
+    return true;
+#else
     // 1. ulimit -c unlimited for current session
     struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
     if (setrlimit(RLIMIT_CORE, &rl) != 0) {
@@ -79,10 +95,17 @@ static bool setupKernelCoredumps(const std::string& dump_dir,
                   << "\" > /proc/sys/kernel/core_pattern'\n";
         return false;
     }
+#endif
 }
 
 // ─── Show current coredump status ─────────────────────────────────────────
 static void showStatus() {
+#ifdef _WIN32
+    std::cout << "\n=== Windows Coredump Status ===\n";
+    std::cout << "Windows platform detected. Native Linux /proc coredump status is not available.\n";
+    std::cout << "Use event viewer or Windows Error Reporting for crash dump configuration.\n";
+    std::cout << "===============================\n\n";
+#else
     std::cout << "\n=== Coredump Status ===\n";
 
     struct rlimit rl;
@@ -103,6 +126,7 @@ static void showStatus() {
         std::cout << "core_uses_pid: " << v << "\n";
     }
     std::cout << "======================\n\n";
+#endif
 }
 
 // ─── Save stdin core data to file (kernel pipe mode) ──────────────────────

@@ -11,20 +11,30 @@
 #include <iomanip>
 #include <chrono>
 #include <cstring>
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <unistd.h>
 #include <signal.h>
 #include <sys/resource.h>
+#endif
 
 namespace OSKernel {
 
 CoreDumpManager::CoreDumpManager() : is_enabled_(false) {
     initializePatterns();
+#ifdef _WIN32
+    // Windows does not expose POSIX core limits directly
+    is_enabled_ = false;
+    config_.max_size = 0;
+#else
     // Try to load current configuration
     struct rlimit rlim;
     if (getrlimit(RLIMIT_CORE, &rlim) == 0) {
         is_enabled_ = (rlim.rlim_cur > 0);
         config_.max_size = rlim.rlim_cur;
     }
+#endif
     config_.enabled = is_enabled_;
     config_.output_dir = ".";
     config_.compress = false;
@@ -79,6 +89,13 @@ bool CoreDumpManager::configure(const CoreDumpConfig& config) {
 }
 
 bool CoreDumpManager::enableCoreDump(size_t maxSize) {
+#ifdef _WIN32
+    std::cout << "[CoreDump] Windows build: core dump limit configuration is not supported via setrlimit." << std::endl;
+    is_enabled_ = true;
+    config_.enabled = true;
+    config_.max_size = maxSize;
+    return true;
+#else
     struct rlimit rlim;
     
     rlim.rlim_cur = (maxSize == 0) ? RLIM_INFINITY : maxSize;
@@ -102,9 +119,15 @@ bool CoreDumpManager::enableCoreDump(size_t maxSize) {
               << std::endl;
     
     return true;
+#endif
 }
 
 bool CoreDumpManager::disableCoreDump() {
+#ifdef _WIN32
+    is_enabled_ = false;
+    config_.enabled = false;
+    return true;
+#else
     struct rlimit rlim;
     
     rlim.rlim_cur = 0;
@@ -118,6 +141,7 @@ bool CoreDumpManager::disableCoreDump() {
     config_.enabled = false;
     
     return true;
+#endif
 }
 
 bool CoreDumpManager::isEnabled() const {
@@ -156,7 +180,11 @@ std::string CoreDumpManager::generateCoreFileName(const std::string& prefix) con
         oss << "_" << std::setfill('0') << std::setw(3) << ms.count();
     }
     
+#ifdef _WIN32
+    oss << "_" << GetCurrentProcessId() << ".core";
+#else
     oss << "_" << getpid() << ".core";
+#endif
     
     return config_.output_dir + "/" + oss.str();
 }

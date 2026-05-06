@@ -113,6 +113,7 @@ int main(int argc, char* argv[]) {
     std::cout << "🗄️  Database    : " << db_path    << "\n\n";
 
     // ── Step 1: Parse .core files and merge into CSV ─────────────────────────
+#ifndef _WIN32
     if (!skip_cores) {
         std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
         std::cout << "🧩 Step 1/3: Parsing OS kernel .core files...\n";
@@ -133,6 +134,14 @@ int main(int argc, char* argv[]) {
         }
         std::cout << "\n";
     }
+#else
+    if (!skip_cores) {
+        std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        std::cout << "🧩 Step 1/3: Core parsing is not supported on Windows build.\n";
+        std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+        std::cout << "   ℹ️  Use --no-cores to skip this step on Windows.\n\n";
+    }
+#endif
 
     // ── Step 2: AI analysis pipeline ─────────────────────────────────────────
     std::cout << "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";

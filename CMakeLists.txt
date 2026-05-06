@@ -23,11 +23,17 @@ target_include_directories(crash_simulator PRIVATE
 
 target_compile_options(crash_simulator PRIVATE
     -Wall -Wextra
-    $<$<CONFIG:Debug>:-g -O0 -rdynamic>
+    $<$<CONFIG:Debug>:-g -O0>
     $<$<CONFIG:Release>:-O2>
 )
 
-target_link_libraries(crash_simulator PRIVATE pthread)
+if(WIN32)
+    target_compile_definitions(crash_simulator PRIVATE PLATFORM_WINDOWS)
+    target_link_libraries(crash_simulator PRIVATE DbgHelp)
+else()
+    target_compile_definitions(crash_simulator PRIVATE PLATFORM_LINUX)
+    target_link_libraries(crash_simulator PRIVATE pthread)
+endif()
 
 # ─── 2. Core Dump Handler (OS kernel integration) ─────────────────────────────
 set(COREDUMP_SOURCES
@@ -45,11 +51,16 @@ target_include_directories(coredump_handler PRIVATE
 )
 
 target_compile_options(coredump_handler PRIVATE
-    -Wall -Wextra -g -rdynamic
+    -Wall -Wextra
 )
 
-target_link_libraries(coredump_handler PRIVATE pthread dl)
-target_compile_definitions(coredump_handler PRIVATE PLATFORM_LINUX)
+if(WIN32)
+    target_compile_definitions(coredump_handler PRIVATE PLATFORM_WINDOWS)
+    target_link_libraries(coredump_handler PRIVATE DbgHelp)
+else()
+    target_compile_definitions(coredump_handler PRIVATE PLATFORM_LINUX)
+    target_link_libraries(coredump_handler PRIVATE pthread dl)
+endif()
 
 # ─── 3. Crash Analyzer (intelligent module) ──────────────────────────────────
 set(ANALYZER_SOURCES
@@ -75,14 +86,22 @@ target_compile_options(crash_analyzer PRIVATE
     $<$<CONFIG:Release>:-O2>
 )
 
-target_compile_definitions(crash_analyzer PRIVATE PLATFORM_LINUX)
+if(WIN32)
+    target_compile_definitions(crash_analyzer PRIVATE PLATFORM_WINDOWS)
+else()
+    target_compile_definitions(crash_analyzer PRIVATE PLATFORM_LINUX)
+endif()
 
 find_package(SQLite3 QUIET)
 if(SQLite3_FOUND)
     target_include_directories(crash_analyzer PRIVATE ${SQLite3_INCLUDE_DIRS})
-    target_link_libraries(crash_analyzer PRIVATE ${SQLite3_LIBRARIES} stdc++fs)
+    target_link_libraries(crash_analyzer PRIVATE ${SQLite3_LIBRARIES})
 else()
-    target_link_libraries(crash_analyzer PRIVATE sqlite3 stdc++fs)
+    target_link_libraries(crash_analyzer PRIVATE sqlite3)
+endif()
+
+if(NOT WIN32)
+    target_link_libraries(crash_analyzer PRIVATE stdc++fs)
 endif()
 
 # ─── 4. Automated Test Suite ──────────────────────────────────────────────────
@@ -94,7 +113,9 @@ target_include_directories(test_suite PRIVATE
 )
 
 target_compile_options(test_suite PRIVATE -Wall -g)
-target_link_libraries(test_suite PRIVATE pthread)
+if(NOT WIN32)
+    target_link_libraries(test_suite PRIVATE pthread)
+endif()
 
 # ─── Install targets ──────────────────────────────────────────────────────────
 install(TARGETS crash_simulator crash_analyzer coredump_handler
