@@ -109,80 +109,80 @@ def list_core_files():
             })
     return results
 
-# ─── AI Analysis via Claude API ───────────────────────────────────────────────
-def ask_claude(prompt: str) -> str:
-    """Call Claude claude-sonnet-4-5 to analyze crash data."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
-        return "⚠️  ANTHROPIC_API_KEY not set. Export it before launching the dashboard."
-    if not api_key.startswith("sk-ant-"):
-        return "⚠️  ANTHROPIC_API_KEY looks invalid (should start with 'sk-ant-'). Please check your key."
+# ─── AI Analysis via Claude API ─────────────────────────────────────────────── [COMMENTED OUT]
+# def ask_claude(prompt: str) -> str:
+#     """Call Claude claude-sonnet-4-5 to analyze crash data."""
+#     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+#     if not api_key:
+#         return "⚠️  ANTHROPIC_API_KEY not set. Export it before launching the dashboard."
+#     if not api_key.startswith("sk-ant-"):
+#         return "⚠️  ANTHROPIC_API_KEY looks invalid (should start with 'sk-ant-'). Please check your key."
 
-    headers = {
-        "x-api-key": api_key,
-        "anthropic-version": "2023-06-01",
-        "content-type": "application/json",
-    }
-    body = {
-        "model": "claude-haiku-4-5-20251001",
-        "max_tokens": 1500,
-        "messages": [{"role": "user", "content": prompt}],
-        "system": (
-            "You are an expert embedded-systems crash analyst. "
-            "Analyze crash data concisely. Use bullet points. "
-            "Provide: 1) Root cause, 2) Correlation patterns, 3) Actionable fixes."
-        ),
-    }
-    try:
-        r = requests.post("https://api.anthropic.com/v1/messages",
-                          headers=headers, json=body, timeout=60)
-        if r.status_code == 401:
-            return ("⚠️  401 Unauthorized — your ANTHROPIC_API_KEY is invalid or expired.\n"
-                    "Get a valid key at https://console.anthropic.com/ and re-export it:\n"
-                    "  export ANTHROPIC_API_KEY=sk-ant-...")
-        if r.status_code == 400:
-            try:
-                detail = r.json().get("error", {}).get("message", r.text)
-            except Exception:
-                detail = r.text
-            return f"⚠️  400 Bad Request — {detail}"
-        if r.status_code == 429:
-            return "⚠️  Rate limited (429). Wait a moment and try again."
-        r.raise_for_status()
-        data = r.json()
-        return data["content"][0]["text"]
-    except requests.exceptions.Timeout:
-        return "⚠️  API timeout — check your network or increase the timeout."
-    except requests.exceptions.ConnectionError:
-        return "⚠️  Cannot reach api.anthropic.com — check your network connection."
-    except Exception as e:
-        return f"⚠️  API error: {e}"
+#     headers = {
+#         "x-api-key": api_key,
+#         "anthropic-version": "2023-06-01",
+#         "content-type": "application/json",
+#     }
+#     body = {
+#         "model": "claude-haiku-4-5-20251001",
+#         "max_tokens": 1500,
+#         "messages": [{"role": "user", "content": prompt}],
+#         "system": (
+#             "You are an expert embedded-systems crash analyst. "
+#             "Analyze crash data concisely. Use bullet points. "
+#             "Provide: 1) Root cause, 2) Correlation patterns, 3) Actionable fixes."
+#         ),
+#     }
+#     try:
+#         r = requests.post("https://api.anthropic.com/v1/messages",
+#                           headers=headers, json=body, timeout=60)
+#         if r.status_code == 401:
+#             return ("⚠️  401 Unauthorized — your ANTHROPIC_API_KEY is invalid or expired.\n"
+#                     "Get a valid key at https://console.anthropic.com/ and re-export it:\n"
+#                     "  export ANTHROPIC_API_KEY=sk-ant-...")
+#         if r.status_code == 400:
+#             try:
+#                 detail = r.json().get("error", {}).get("message", r.text)
+#             except Exception:
+#                 detail = r.text
+#             return f"⚠️  400 Bad Request — {detail}"
+#         if r.status_code == 429:
+#             return "⚠️  Rate limited (429). Wait a moment and try again."
+#         r.raise_for_status()
+#         data = r.json()
+#         return data["content"][0]["text"]
+#     except requests.exceptions.Timeout:
+#         return "⚠️  API timeout — check your network or increase the timeout."
+#     except requests.exceptions.ConnectionError:
+#         return "⚠️  Cannot reach api.anthropic.com — check your network connection."
+#     except Exception as e:
+#         return f"⚠️  API error: {e}"
 
-def build_ai_prompt(df: pd.DataFrame) -> str:
-    if df.empty:
-        return "No crash data available."
-    top = df.head(20)
-    lines = []
-    for _, row in top.iterrows():
-        fault = row.get("fault_type", row.get("category", "?"))
-        sev   = row.get("severity", "?")
-        cause = row.get("probable_cause", row.get("cause", "?"))
-        hint  = row.get("solution_hint", row.get("hint", "?"))
-        lines.append(f"- {fault} | {sev} | {cause} | hint: {hint}")
-
-    counts = df.get("fault_type", df.get("category", pd.Series())).value_counts().head(5)
-    top_faults = ", ".join(f"{k}({v})" for k,v in counts.items())
-
-    return (
-        f"I have {len(df)} crash records from an embedded Linux system.\n\n"
-        f"Top fault types: {top_faults}\n\n"
-        f"Sample records (fault | severity | cause | hint):\n"
-        + "\n".join(lines) +
-        "\n\nPlease:\n"
-        "1. Identify the most probable root causes.\n"
-        "2. Detect any correlation patterns between crash types.\n"
-        "3. Provide 3–5 concrete, prioritized fixes for the development team."
-    )
+# def build_ai_prompt(df: pd.DataFrame) -> str:
+#     if df.empty:
+#         return "No crash data available."
+#     top = df.head(20)
+#     lines = []
+#     for _, row in top.iterrows():
+#         fault = row.get("fault_type", row.get("category", "?"))
+#         sev   = row.get("severity", "?")
+#         cause = row.get("probable_cause", row.get("cause", "?"))
+#         hint  = row.get("solution_hint", row.get("hint", "?"))
+#         lines.append(f"- {fault} | {sev} | {cause} | hint: {hint}")
+#
+#     counts = df.get("fault_type", df.get("category", pd.Series())).value_counts().head(5)
+#     top_faults = ", ".join(f"{k}({v})" for k,v in counts.items())
+#
+#     return (
+#         f"I have {len(df)} crash records from an embedded Linux system.\n\n"
+#         f"Top fault types: {top_faults}\n\n"
+#         f"Sample records (fault | severity | cause | hint):\n"
+#         + "\n".join(lines) +
+#         "\n\nPlease:\n"
+#         "1. Identify the most probable root causes.\n"
+#         "2. Detect any correlation patterns between crash types.\n"
+#         "3. Provide 3–5 concrete, prioritized fixes for the development team."
+#     )
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -207,8 +207,8 @@ if df.empty and data_source == "SQLite DB":
     df = load_csv()   # fallback
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
-tab_overview, tab_timeline, tab_details, tab_ai, tab_cores = st.tabs([
-    "📊 Overview", "📈 Timeline", "🗂 Details", "🤖 AI Analysis", "💾 Core Files"
+tab_overview, tab_timeline, tab_details, tab_cores = st.tabs([
+    "📊 Overview", "📈 Timeline", "🗂 Details", "💾 Core Files"
 ])
 
 # ══════════════════════════════════════════════════════════════
@@ -362,45 +362,45 @@ with tab_details:
                            "filtered_crashes.csv", "text/csv")
 
 # ══════════════════════════════════════════════════════════════
-# TAB 4 — AI Analysis
+# TAB 4 — AI Analysis [COMMENTED OUT]
 # ══════════════════════════════════════════════════════════════
-with tab_ai:
-    st.header("🤖 AI-Powered Crash Analysis")
-    st.caption("Uses Claude claude-sonnet-4-5 to correlate crashes and suggest fixes.")
-
-    if df.empty:
-        st.warning("No crash data loaded — run the pipeline first.")
-    else:
-        col1, col2 = st.columns([3, 1])
-        with col1:
-            custom_prompt = st.text_area(
-                "Custom question (or leave blank for automatic analysis)",
-                height=80,
-                placeholder="e.g. Why are there recurring SIGSEGV crashes? What memory issues should I fix first?"
-            )
-        with col2:
-            n_records = st.slider("Records to analyse", 5, 100,
-                                  min(20, len(df)), step=5)
-
-        if st.button("🔍 Analyse with AI", type="primary"):
-            df_sample = df.head(n_records)
-            prompt = custom_prompt.strip() if custom_prompt.strip() else build_ai_prompt(df_sample)
-
-            with st.spinner("Calling Claude AI..."):
-                result = ask_claude(prompt)
-
-            st.subheader("AI Analysis Result")
-            st.markdown(f'<div class="ai-box">{result}</div>', unsafe_allow_html=True)
-
-            # Show prompt used
-            with st.expander("Prompt sent to AI"):
-                st.code(prompt, language="text")
-
-    st.divider()
-    st.subheader("Configuration")
-    api_status = "✅ Set" if os.environ.get("ANTHROPIC_API_KEY") else "❌ Not set"
-    st.info(f"ANTHROPIC_API_KEY: {api_status}\n\n"
-            "Export before launching:\n```bash\nexport ANTHROPIC_API_KEY=sk-ant-...\nstreamlit run dashboard/dashboard.py\n```")
+# with tab_ai:
+#     st.header("🤖 AI-Powered Crash Analysis")
+#     st.caption("Uses Claude claude-sonnet-4-5 to correlate crashes and suggest fixes.")
+#
+#     if df.empty:
+#         st.warning("No crash data loaded — run the pipeline first.")
+#     else:
+#         col1, col2 = st.columns([3, 1])
+#         with col1:
+#             custom_prompt = st.text_area(
+#                 "Custom question (or leave blank for automatic analysis)",
+#                 height=80,
+#                 placeholder="e.g. Why are there recurring SIGSEGV crashes? What memory issues should I fix first?"
+#             )
+#         with col2:
+#             n_records = st.slider("Records to analyse", 5, 100,
+#                                   min(20, len(df)), step=5)
+#
+#         if st.button("🔍 Analyse with AI", type="primary"):
+#             df_sample = df.head(n_records)
+#             prompt = custom_prompt.strip() if custom_prompt.strip() else build_ai_prompt(df_sample)
+#
+#             with st.spinner("Calling Claude AI..."):
+#                 result = ask_claude(prompt)
+#
+#             st.subheader("AI Analysis Result")
+#             st.markdown(f'<div class="ai-box">{result}</div>', unsafe_allow_html=True)
+#
+#             # Show prompt used
+#             with st.expander("Prompt sent to AI"):
+#                 st.code(prompt, language="text")
+#
+#     st.divider()
+#     st.subheader("Configuration")
+#     api_status = "✅ Set" if os.environ.get("ANTHROPIC_API_KEY") else "❌ Not set"
+#     st.info(f"ANTHROPIC_API_KEY: {api_status}\n\n"
+#             "Export before launching:\n```bash\nexport ANTHROPIC_API_KEY=sk-ant-...\nstreamlit run dashboard/dashboard.py\n```")
 
 # ══════════════════════════════════════════════════════════════
 # TAB 5 — Core Files
