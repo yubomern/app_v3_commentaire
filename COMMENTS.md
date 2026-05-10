@@ -19,7 +19,7 @@ The dashboard has been successfully modified to hide/comment out all AI function
 - **Purpose**: Constructed prompts for Claude AI based on crash data
 - **Status**: ✅ FULLY COMMENTED OUT
 - **Reason**: Helper function for the AI feature; no longer needed
-- **Impact**: Cannot generate intelligent crash correlations
+- **Impact**: Cannot generate intelligent crash correlati
 
 ### 2. **Tab Reorganization**
 

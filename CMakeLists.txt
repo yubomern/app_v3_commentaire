@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.14)
 project(CoreDumpPFE VERSION 3.0 LANGUAGES CXX)
 
+# ─── Build Type Detection ──────────────────────────────────────────────────────
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_PROCESSOR}")
+
+# ─── C++ Standard Configuration ────────────────────────────────────────────────
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -100,10 +109,6 @@ else()
     target_link_libraries(crash_analyzer PRIVATE sqlite3)
 endif()
 
-if(NOT WIN32)
-    target_link_libraries(crash_analyzer PRIVATE stdc++fs)
-endif()
-
 # ─── 4. Automated Test Suite ──────────────────────────────────────────────────
 add_executable(test_suite test/test_suite.cpp)
 
@@ -121,3 +126,22 @@ endif()
 install(TARGETS crash_simulator crash_analyzer coredump_handler
     RUNTIME DESTINATION bin
 )
+
+# ─── Build Summary ────────────────────────────────────────────────────────────
+message(STATUS "")
+message(STATUS "╔════════════════════════════════════════════════════════════╗")
+message(STATUS "║     CoreDump Analysis & Solution Engine v3.0               ║")
+message(STATUS "╚════════════════════════════════════════════════════════════╝")
+message(STATUS "")
+message(STATUS "✓ Crash Simulator ............ crash_simulator")
+message(STATUS "✓ Core Dump Handler ......... coredump_handler")
+message(STATUS "✓ Crash Analyzer (ML) ....... crash_analyzer")
+message(STATUS "✓ Test Suite ................. test_suite")
+message(STATUS "")
+message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "Platform: ${CMAKE_SYSTEM_NAME} (${CMAKE_SYSTEM_PROCESSOR})")
+message(STATUS "C++ Standard: C++${CMAKE_CXX_STANDARD}")
+message(STATUS "")
+message(STATUS "To build: cmake --build . --config ${CMAKE_BUILD_TYPE}")
+message(STATUS "To install: cmake --install .")
+message(STATUS "")
