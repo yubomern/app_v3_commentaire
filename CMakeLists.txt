@@ -8,11 +8,24 @@ endif()
 
 message(STATUS "Build Type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "System: ${CMAKE_SYSTEM_NAME} ${CMAKE_SYSTEM_PROCESSOR}")
+message(STATUS "Compiler: ${CMAKE_CXX_COMPILER_ID}")
 
 # ─── C++ Standard Configuration ────────────────────────────────────────────────
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+
+# ─── Compiler-specific flags ──────────────────────────────────────────────────
+if(MSVC)
+    add_compile_options(/W4 /permissive- /Zc:__cplusplus)
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS NOMINMAX)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2")
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O2")
+endif()
 
 # ─── Output directories ───────────────────────────────────────────────────────
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -28,12 +41,6 @@ add_executable(crash_simulator ${SIMULATOR_SOURCES})
 
 target_include_directories(crash_simulator PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/simulator/include
-)
-
-target_compile_options(crash_simulator PRIVATE
-    -Wall -Wextra
-    $<$<CONFIG:Debug>:-g -O0>
-    $<$<CONFIG:Release>:-O2>
 )
 
 if(WIN32)
@@ -59,16 +66,8 @@ target_include_directories(coredump_handler PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/coredump_handler/inc
 )
 
-target_compile_options(coredump_handler PRIVATE
-    -Wall -Wextra
-)
-
 if(WIN32)
     target_compile_definitions(coredump_handler PRIVATE PLATFORM_WINDOWS)
-    target_link_libraries(coredump_handler PRIVATE DbgHelp)
-else()
-    target_compile_definitions(coredump_handler PRIVATE PLATFORM_LINUX)
-    target_link_libraries(coredump_handler PRIVATE pthread dl)
 endif()
 
 # ─── 3. Crash Analyzer (intelligent module) ──────────────────────────────────
@@ -87,12 +86,6 @@ add_executable(crash_analyzer ${ANALYZER_SOURCES})
 
 target_include_directories(crash_analyzer PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/analyzer/include
-)
-
-target_compile_options(crash_analyzer PRIVATE
-    -Wall -Wextra
-    $<$<CONFIG:Debug>:-g -O0>
-    $<$<CONFIG:Release>:-O2>
 )
 
 if(WIN32)
@@ -117,7 +110,6 @@ target_include_directories(test_suite PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/analyzer/include
 )
 
-target_compile_options(test_suite PRIVATE -Wall -g)
 if(NOT WIN32)
     target_link_libraries(test_suite PRIVATE pthread)
 endif()

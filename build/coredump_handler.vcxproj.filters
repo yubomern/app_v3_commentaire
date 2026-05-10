@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\hp\Desktop\ziedapplication\appminister\app_v3_commentaire\coredump_handler\src\CoreDump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hp\Desktop\ziedapplication\appminister\app_v3_commentaire\coredump_handler\src\SystemMetrics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hp\Desktop\ziedapplication\appminister\app_v3_commentaire\coredump_handler\src\BacktraceCollector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hp\Desktop\ziedapplication\appminister\app_v3_commentaire\coredump_handler\src\CoreDumpConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Users\hp\Desktop\ziedapplication\appminister\app_v3_commentaire\coredump_handler\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\hp\Desktop\ziedapplication\appminister\app_v3_commentaire\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{223A4D96-9EC0-3056-ABAB-B9F63D0881B4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -22,8 +22,16 @@
 #include <cassert>
 #include <chrono>
 #include <thread>
-#include <sys/resource.h>
-#include <unistd.h>
+
+// Platform-specific headers
+#ifdef _WIN32
+    #include <windows.h>
+    #include <direct.h>
+    #define chdir _chdir
+#else
+    #include <sys/resource.h>
+    #include <unistd.h>
+#endif
 
 namespace fs = std::filesystem;
 
@@ -77,6 +85,13 @@ static bool csvHasData(const std::string& path) {
 
 // ─── Setup coredumps programmatically ─────────────────────────────────────
 static bool setupCoredumps() {
+#ifdef _WIN32
+    // Windows: create output directory, core dumps are handled by OS
+    fs::create_directories("simulator_output/coredumps");
+    std::cout << "   ℹ️  Windows: coredumps in simulator_output/coredumps\n";
+    return true;
+#else
+    // Linux: set resource limits and kernel pattern
     struct rlimit rl = { RLIM_INFINITY, RLIM_INFINITY };
     bool ok = setrlimit(RLIMIT_CORE, &rl) == 0;
     fs::create_directories("simulator_output/coredumps");
@@ -85,12 +100,13 @@ static bool setupCoredumps() {
     std::ofstream kp("/proc/sys/kernel/core_pattern");
     if (kp.is_open()) {
         kp << "simulator_output/coredumps/core.%e.%p.%t\n";
-        std::cout << "   ✅ kernel core_pattern configured\n";
+        std::cout << "   ✓ kernel core_pattern configured\n";
     } else {
         std::cout << "   ℹ️  /proc/sys/kernel/core_pattern not writable "
                      "(needs root) — using default pattern\n";
     }
     return ok;
+#endif
 }
 
 // ─── main ────────────────────────────────────────────────────────────────────
@@ -103,9 +119,15 @@ int main() {
 
     // Locate binaries relative to this test executable
     // When built with cmake, binaries land in build/bin/
+#ifdef _WIN32
+    std::string bin_dir = fs::absolute(".");  // Windows: current directory
+    std::string sim_bin  = bin_dir.string() + "/crash_simulator.exe";
+    std::string ana_bin  = bin_dir.string() + "/crash_analyzer.exe";
+#else
     std::string bin_dir = fs::canonical(fs::path("/proc/self/exe")).parent_path().string();
     std::string sim_bin  = bin_dir + "/crash_simulator";
     std::string ana_bin  = bin_dir + "/crash_analyzer";
+#endif
     std::string cdh_bin  = bin_dir + "/coredump_handler";
 
     // Fallback: look in current directory
@@ -113,7 +135,6 @@ int main() {
     if (!fs::exists(ana_bin)) ana_bin  = "./crash_analyzer";
 
     // Change to build directory where simulator works correctly
-    // (avoids root-owned simulator_output directory issue)
     std::string build_dir = bin_dir;
     chdir(build_dir.c_str());
 
@@ -134,9 +155,15 @@ int main() {
 
     // Run simulator: 5 random crashes, write CSV
     int sim_ret = run(sim_bin + " --count 5");
+#ifdef _WIN32
+    TEST("Simulator exits cleanly",
+         sim_ret == 0,
+         "exit code " + std::to_string(sim_ret));
+#else
     TEST("Simulator exits cleanly (or crashes intentionally)",
          sim_ret == 0 || WIFEXITED(sim_ret),
          "exit code " + std::to_string(sim_ret));
+#endif
 
     TEST("Simulator CSV generated",
          nonEmpty("simulator_output/crash_report.csv"),

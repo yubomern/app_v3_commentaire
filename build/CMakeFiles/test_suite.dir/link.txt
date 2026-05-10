@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/test_suite.dir/test/test_suite.cpp.o -o bin/test_suite  -lpthread 

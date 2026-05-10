@@ -1,0 +1,10 @@
+^C:\USERS\HP\DESKTOP\ZIEDAPPLICATION\APPMINISTER\APP_V3_COMMENTAIRE\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire -BC:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build --check-stamp-file C:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

@@ -1,7 +1,5 @@
 @echo off
-REM ────────────────────────────────────────────────────────────────────────────
 REM Build script for CoreDump Analyzer - Windows native build
-REM ────────────────────────────────────────────────────────────────────────────
 
 setlocal enabledelayedexpansion
 
@@ -15,9 +13,9 @@ if "%TARGET%"=="" (
 
 if /i "%TARGET%"=="release" (
     echo.
-    echo ╔══════════════════════════════════════════════════════════╗
-    echo ║   Building for Windows x86_64 (Release)                  ║
-    echo ╚══════════════════════════════════════════════════════════╝
+    echo ========================================
+    echo   Building for Windows x86_64 Release
+    echo ========================================
     echo.
     
     if exist "%BUILD_DIR%" (
@@ -35,16 +33,16 @@ if /i "%TARGET%"=="release" (
     cmake --build . --config Release --parallel
     
     echo.
-    echo ✓ Windows Release build complete!
-    echo.
+    echo Build complete!
     echo Binaries in: %BUILD_DIR%\bin\Release\
+    echo.
     dir "%BUILD_DIR%\bin\Release\"
     
 ) else if /i "%TARGET%"=="debug" (
     echo.
-    echo ╔══════════════════════════════════════════════════════════╗
-    echo ║   Building for Windows x86_64 (Debug)                    ║
-    echo ╚══════════════════════════════════════════════════════════╝
+    echo ========================================
+    echo   Building for Windows x86_64 Debug
+    echo ========================================
     echo.
     
     if exist "%BUILD_DIR%" (
@@ -62,9 +60,9 @@ if /i "%TARGET%"=="release" (
     cmake --build . --config Debug --parallel
     
     echo.
-    echo ✓ Windows Debug build complete!
-    echo.
+    echo Build complete!
     echo Binaries in: %BUILD_DIR%\bin\Debug\
+    echo.
     dir "%BUILD_DIR%\bin\Debug\"
     
 ) else if /i "%TARGET%"=="clean" (
@@ -72,7 +70,7 @@ if /i "%TARGET%"=="release" (
     if exist "%BUILD_DIR%" (
         rmdir /s /q "%BUILD_DIR%"
     )
-    echo ✓ Clean complete!
+    echo Clean complete!
     
 ) else if /i "%TARGET%"=="test" (
     echo Running tests...
@@ -98,9 +96,9 @@ if /i "%TARGET%"=="release" (
     echo   help        Show this help
     echo.
     echo Examples:
-    echo   build.bat release          # Release build
-    echo   build.bat debug            # Debug build
-    echo   build.bat clean            # Clean build
+    echo   build.bat release          Release build
+    echo   build.bat debug            Debug build
+    echo   build.bat clean            Clean build
     echo.
 )
 

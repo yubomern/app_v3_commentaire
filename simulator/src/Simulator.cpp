@@ -11,6 +11,7 @@
 #include <vector>
 #include <cstring>
 #include <chrono>
+#include <ctime>
 #include <csignal>
 #include <cstdlib>
 #include <fstream>      // ← AJOUTER : pour ofstream  ifstream
@@ -20,9 +21,11 @@
 namespace fs = std::filesystem;
 
 #ifdef _WIN32
-#include <windows.h>
-#include <processthreadsapi.h>
-#endif
+    #ifndef NOMINMAX
+    #define NOMINMAX
+    #endif
+    #include <windows.h>
+    #include <processthreadsapi.h>
 
 namespace CrashSimulator {
 
@@ -598,7 +601,17 @@ CrashInfo Simulator::getCrashInfo(CrashCategory cat) {
     auto now = std::chrono::system_clock::now();
     std::time_t time = std::chrono::system_clock::to_time_t(now);
     char buf[32];
-    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", std::localtime(&time));
+    
+    // Safe localtime wrapper for Windows/Unix
+#ifdef _WIN32
+    struct tm tm_local;
+    localtime_s(&tm_local, &time);
+    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm_local);
+#else
+    struct tm tm_local;
+    localtime_r(&time, &tm_local);
+    std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &tm_local);
+#endif
     info.timestamp = buf;
     
     // Set description and hint based on category

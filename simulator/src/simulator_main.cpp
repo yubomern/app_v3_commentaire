@@ -21,8 +21,17 @@
 #include <map>
 #include <chrono>
 #include <iomanip>
+#include <thread>
+
 #ifdef _WIN32
-#include <windows.h>
+    #ifndef NOMINMAX
+    #define NOMINMAX
+    #endif
+    #include <windows.h>
+    #define SLEEP_MS(ms) Sleep(ms)
+#else
+    #include <unistd.h>
+    #define SLEEP_MS(ms) usleep((ms) * 1000)
 #endif
 
 namespace fs = std::filesystem;
@@ -127,7 +136,17 @@ static void appendCSV(const std::string& filepath, const CrashReport& r,
 
     auto tt = std::chrono::system_clock::to_time_t(r.timestamp);
     std::ostringstream ts;
-    ts << std::put_time(std::localtime(&tt), "%Y-%m-%d %H:%M:%S");
+    
+    // Safe localtime wrapper for Windows/Unix
+#ifdef _WIN32
+    struct tm timeinfo_buf;
+    struct tm* timeinfo = &timeinfo_buf;
+    localtime_s(timeinfo, &tt);
+#else
+    struct tm timeinfo_buf;
+    struct tm* timeinfo = localtime_r(&tt, &timeinfo_buf);
+#endif
+    ts << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
 
     // Map severity int → string
     std::string sev_str = (severity==4?"CRITICAL":severity==3?"HIGH":
@@ -254,7 +273,7 @@ int main(int argc, char* argv[]) {
         ++success;
 
         if (i < cfg.crash_count - 1 && cfg.delay_ms > 0) {
-            usleep(cfg.delay_ms * 1000);
+            SLEEP_MS(cfg.delay_ms);
         }
     }
 

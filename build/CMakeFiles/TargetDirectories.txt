@@ -1,10 +1,5 @@
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/crash_simulator.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/coredump_handler.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/crash_analyzer.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/test_suite.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/edit_cache.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/rebuild_cache.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/list_install_components.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/install.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/install/local.dir
-/home/dghriss@actia.local/Bureau/pfe/w12/app_v3_fixed/app_v3/build/CMakeFiles/install/strip.dir
+C:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build/CMakeFiles/crash_simulator.dir
+C:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build/CMakeFiles/coredump_handler.dir
+C:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build/CMakeFiles/crash_analyzer.dir
+C:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/hp/Desktop/ziedapplication/appminister/app_v3_commentaire/build/CMakeFiles/ZERO_CHECK.dir
